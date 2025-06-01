@@ -1,7 +1,6 @@
 package com.example.myapp.entity;
 // JPA関連
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 // バリデーション関連
 import jakarta.validation.constraints.*;
 // Spring Data JPAの監査機能
