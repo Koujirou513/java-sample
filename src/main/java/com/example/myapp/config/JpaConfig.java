@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Configuration
-@EnableJpaAuditing // JPAの監査機能を有効化
+@EnableJpaAuditing // @createdDate, @lastModifiedDate などを有効にする
 public class JpaConfig {
     
 }
