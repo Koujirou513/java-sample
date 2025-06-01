@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase1: データベース接続確認</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            border-left: 4px solid #007bff;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+    </style>
+</head>
+<body>
+    <h1>🍺 Phase1: データベース接続確認</h1>
+    
+    <div class="container">
+        <h3>1. データベース接続テスト</h3>
+        <button onclick="testDatabase()">接続テスト実行</button>
+        <div id="testResult"></div>
+    </div>
+    
+    <div class="container">
+        <h3>2. ビール一覧表示</h3>
+        <button onclick="loadBeers()">ビール一覧取得</button>
+        <div id="beerList"></div>
+    </div>
+    
+    <div class="container">
+        <h3>3. 新しいビール追加</h3>
+        <input type="text" id="beerName" placeholder="ビール名" style="margin: 5px; padding: 8px;">
+        <input type="number" id="beerPrice" placeholder="価格" style="margin: 5px; padding: 8px;">
+        <button onclick="addBeer()">ビール追加</button>
+        <div id="addResult"></div>
+    </div>
+    
+    <script>
+        // データベース接続テスト
+        async function testDatabase() {
+            const resultDiv = document.getElementById('testResult');
+            resultDiv.innerHTML = '接続確認中...';
+            
+            try {
+                const response = await fetch('/api/beers/test');
+                const result = await response.text();
+                resultDiv.innerHTML = `<div class="result">${result}</div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">エラー: ${error.message}</div>`;
+            }
+        }
+        
+        // ビール一覧取得
+        async function loadBeers() {
+            const resultDiv = document.getElementById('beerList');
+            resultDiv.innerHTML = '読み込み中...';
+            
+            try {
+                const response = await fetch('/api/beers');
+                const beers = await response.json();
+                
+                let html = '<div class="result"><h4>登録済みビール一覧</h4>';
+                if (beers.length === 0) {
+                    html += '<p>まだビールが登録されていません</p>';
+                } else {
+                    html += '<ul>';
+                    beers.forEach(beer => {
+                        html += `<li>ID:${beer.id} - ${beer.name} (¥${beer.price})</li>`;
+                    });
+                    html += '</ul>';
+                }
+                html += '</div>';
+                
+                resultDiv.innerHTML = html;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">エラー: ${error.message}</div>`;
+            }
+        }
+        
+        // ビール追加
+        async function addBeer() {
+            const name = document.getElementById('beerName').value;
+            const price = document.getElementById('beerPrice').value;
+            const resultDiv = document.getElementById('addResult');
+            
+            if (!name || !price) {
+                resultDiv.innerHTML = '<div class="result error">ビール名と価格を入力してください</div>';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/beers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        price: parseInt(price)
+                    })
+                });
+                
+                const newBeer = await response.json();
+                resultDiv.innerHTML = `<div class="result">✅ 追加完了: ${newBeer.name} (¥${newBeer.price})</div>`;
+                
+                // フォームクリア
+                document.getElementById('beerName').value = '';
+                document.getElementById('beerPrice').value = '';
+                
+                // 一覧を自動更新
+                loadBeers();
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">エラー: ${error.message}</div>`;
+            }
+        }
+        
+        // ページ読み込み時に接続テスト実行
+        document.addEventListener('DOMContentLoaded', function() {
+            testDatabase();
+        });
+    </script>
+</body>
+</html>
