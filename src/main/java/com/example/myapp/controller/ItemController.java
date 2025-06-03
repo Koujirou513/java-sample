@@ -1,32 +1,32 @@
 package com.example.myapp.controller;
 
-import com.example.myapp.entity.Beer;
-import com.example.myapp.repository.BeerRepository;
+import com.example.myapp.entity.Item;
+import com.example.myapp.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/beers")
-public class BeerController {
+@RequestMapping("/api/items")
+public class ItemController {
 
     @Autowired
-    private BeerRepository beerRepository;
+    private ItemRepository ItemRepository;
 
     /**
      * 全ビール一覧を取得
      */
     @GetMapping
-    public List<Beer> getAllBeers() {
-        return beerRepository.findAll();
+    public List<Item> getAllItems() {
+        return ItemRepository.findAll();
     }
 
     /**
      * ビールを新規登録
      */
     @PostMapping
-    public Beer creatBeer(@RequestBody Beer beer) {
-        return beerRepository.save(beer);
+    public Item createItem(@RequestBody Item Item) {
+        return ItemRepository.save(Item);
     }
     
     /**
@@ -34,7 +34,7 @@ public class BeerController {
      */
     @GetMapping("/test")
     public String testDatabase() {
-        long count = beerRepository.count();
+        long count = ItemRepository.count();
         return "データベース接続成功！ビール商品数: " + count + "種類";
     }
 }

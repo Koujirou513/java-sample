@@ -53,15 +53,15 @@
     
     <div class="container">
         <h3>2. ビール一覧表示</h3>
-        <button onclick="loadBeers()">ビール一覧取得</button>
-        <div id="beerList"></div>
+        <button onclick="loadItems()">ビール一覧取得</button>
+        <div id="itemList"></div>
     </div>
     
     <div class="container">
         <h3>3. 新しいビール追加</h3>
-        <input type="text" id="beerName" placeholder="ビール名" style="margin: 5px; padding: 8px;">
-        <input type="number" id="beerPrice" placeholder="価格" style="margin: 5px; padding: 8px;">
-        <button onclick="addBeer()">ビール追加</button>
+        <input type="text" id="itemName" placeholder="ビール名" style="margin: 5px; padding: 8px;">
+        <input type="number" id="itemPrice" placeholder="価格" style="margin: 5px; padding: 8px;">
+        <button onclick="addItem()">ビール追加</button>
         <div id="addResult"></div>
     </div>
     
@@ -72,7 +72,7 @@
             resultDiv.innerHTML = '接続確認中...';
             
             try {
-                const response = await fetch('/api/beers/test');
+                const response = await fetch('/api/items/test');
                 const result = await response.text();
                 resultDiv.innerHTML = `<div class="result">${result}</div>`;
             } catch (error) {
@@ -81,21 +81,21 @@
         }
         
         // ビール一覧取得
-        async function loadBeers() {
-            const resultDiv = document.getElementById('beerList');
+        async function loadItems() {
+            const resultDiv = document.getElementById('itemList');
             resultDiv.innerHTML = '読み込み中...';
             
             try {
-                const response = await fetch('/api/beers');
-                const beers = await response.json();
+                const response = await fetch('/api/items');
+                const items = await response.json();
                 
                 let html = '<div class="result"><h4>登録済みビール一覧</h4>';
-                if (beers.length === 0) {
+                if (items.length === 0) {
                     html += '<p>まだビールが登録されていません</p>';
                 } else {
                     html += '<ul>';
-                    beers.forEach(beer => {
-                        html += `<li>ID:${beer.id} - ${beer.name} (¥${beer.price})</li>`;
+                    items.forEach(item => {
+                        html += `<li>ID:${item.id} - ${item.name} (¥${item.price})</li>`;
                     });
                     html += '</ul>';
                 }
@@ -108,9 +108,9 @@
         }
         
         // ビール追加
-        async function addBeer() {
-            const name = document.getElementById('beerName').value;
-            const price = document.getElementById('beerPrice').value;
+        async function addItem() {
+            const name = document.getElementById('itemName').value;
+            const price = document.getElementById('itemPrice').value;
             const resultDiv = document.getElementById('addResult');
             
             if (!name || !price) {
@@ -119,7 +119,7 @@
             }
             
             try {
-                const response = await fetch('/api/beers', {
+                const response = await fetch('/api/items', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -130,15 +130,15 @@
                     })
                 });
                 
-                const newBeer = await response.json();
-                resultDiv.innerHTML = `<div class="result">✅ 追加完了: ${newBeer.name} (¥${newBeer.price})</div>`;
+                const newItem = await response.json();
+                resultDiv.innerHTML = `<div class="result">✅ 追加完了: ${newItem.name} (¥${newItem.price})</div>`;
                 
                 // フォームクリア
-                document.getElementById('beerName').value = '';
-                document.getElementById('beerPrice').value = '';
+                document.getElementById('itemName').value = '';
+                document.getElementById('itemPrice').value = '';
                 
                 // 一覧を自動更新
-                loadBeers();
+                loadItems();
                 
             } catch (error) {
                 resultDiv.innerHTML = `<div class="result error">エラー: ${error.message}</div>`;
