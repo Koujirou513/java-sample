@@ -53,11 +53,11 @@ public class Item {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    // // リレーション：１商品 -> 多数の販売実績
-    // @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
-    // @ToString.Exclude  // 無限ループを防ぐために除外
-    // @EqualsAndHashCode.Exclude  // 無限ループを防ぐために除外
-    // private List<SalesItem> salesItems; 
+    // リレーション：１商品 -> 多数の販売実績
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    @ToString.Exclude  // 無限ループを防ぐために除外
+    @EqualsAndHashCode.Exclude  // 無限ループを防ぐために除外
+    private List<SalesItems> salesItems; 
 
     // カスタムコンストラクタ
     public Item(String name, Integer price) {
