@@ -5,12 +5,14 @@ import com.example.myapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 @Transactional
 public class UserService{
 
@@ -43,10 +45,16 @@ public class UserService{
         return userRepository.findById(id);
     }
 
+    /**
+     * ユーザー情報更新
+     */
     public User updateUser(User user) {
         return userRepository.save(user);
     }
 
+    /**
+     * ログイン時にユーザーの最終ログイン日時を更新
+     */
     public void updateLastLogin(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
@@ -58,6 +66,9 @@ public class UserService{
         }
     }
 
+    /**
+     * ユーザーのステータスをトグル（有効/無効）
+     */
     public void toggleUserStatus(Long userId) {
         userRepository.findById(userId).ifPresent(user -> {
             user.setIsActive(!user.getIsActive());
