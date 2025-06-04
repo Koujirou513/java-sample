@@ -3,8 +3,6 @@ package com.example.myapp.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
@@ -49,10 +47,10 @@ public class User {
     @Column(name = "last_login_at")
     private LocalDateTime lastLoginAt;
 
-    // @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
-    // @ToString.Exclude  // 無限ループを防ぐために除外
-    // @EqualsAndHashCode.Exclude  // 無限ループを防ぐために除外
-    // private List<Sales> salesList;
+    @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
+    @ToString.Exclude  // 無限ループを防ぐために除外
+    @EqualsAndHashCode.Exclude  // 無限ループを防ぐために除外
+    private List<Sales> salesList;
 
     // カスタムコンストラクタ
     public User(String name, String email, String password) {
