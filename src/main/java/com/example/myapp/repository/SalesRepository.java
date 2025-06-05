@@ -2,9 +2,11 @@ package com.example.myapp.repository;
 
 import com.example.myapp.entity.Sales;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,4 +16,9 @@ public interface SalesRepository extends JpaRepository<Sales, Long> {
      */
     Optional<Sales> findByTargetDate(LocalDate targetDate);
     
+    /**
+     * 全ての販売実績を降順で取得
+     */
+    @Query("SELECT s FROM Sales s ORDER BY s.targetDate DESC")
+    List<Sales> findAllOrderByTargetDateDesc();
 }
