@@ -3,10 +3,16 @@ package com.example.myapp.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+// import org.apache.catalina.User;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -15,7 +21,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements UserDetails{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,5 +73,39 @@ public class User {
         this.password = password;
         this.isAdmin = isAdmin;
         this.isActive = true; // デフォルトでアクティブ
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (isAdmin) {
+            return Collections.singletonList(new SimpleGrantedAuthority("ADMIN"));
+        } else {
+            return Collections.singletonList(new SimpleGrantedAuthority("USER"));
+        }
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+    @Override
+    public String getPassword() {
+        return password;
+    }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // アカウントの有効期限はなし
+    }
+    @Override
+    public boolean isAccountNonLocked() {
+        return isActive; // isActiveがtrueならアカウントはロックされていない
+    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // 資格情報の有効期限はなし
+    }
+    @Override
+    public boolean isEnabled() {
+        return isActive; // isActiveがtrueならアカウントは有効
     }
 }

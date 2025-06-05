@@ -3,6 +3,8 @@ package com.example.myapp.service;
 import com.example.myapp.entity.User;
 import com.example.myapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,13 +16,19 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class UserService{
+public class UserService implements UserDetailsService{
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByName(username)
+            .orElseThrow(() -> new UsernameNotFoundException("ユーザーが見つかりません: " + username));
+    }
     /**
      * ユーザーを新規登録
      */
@@ -61,15 +69,11 @@ public class UserService{
     /**
      * ログイン時にユーザーの最終ログイン日時を更新
      */
-    public void updateLastLogin(Long userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+    public void updateLastLogin(String username) {
+        userRepository.findByName(username).ifPresent(user -> {
             user.setLastLoginAt(LocalDateTime.now());
             userRepository.save(user);
-        } else {
-            throw new UsernameNotFoundException("ユーザーが見つかりません: " + userId);
-        }
+        });
     }
 
     /**
