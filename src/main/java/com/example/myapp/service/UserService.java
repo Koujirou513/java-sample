@@ -37,10 +37,16 @@ public class UserService{
         return userRepository.save(user);
     }
 
+    /**
+     * 全ユーザー一覧を取得
+     */
     public List<User> getAllActiveUsers() {
         return userRepository.findActiveUsers();
     }
 
+    /*
+     * IDでユーザーを取得
+     */
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
