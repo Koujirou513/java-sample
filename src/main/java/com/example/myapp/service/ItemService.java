@@ -18,7 +18,7 @@ public class ItemService {
     private ItemRepository ItemRepository;
 
     /**
-     * 全ビール一覧を取得
+     * アイテム一覧を取得
      */
     @Transactional(readOnly = true)
     public List<Item> getAllItems() {
@@ -26,7 +26,7 @@ public class ItemService {
     }
 
     /**
-     * 有効なビール一覧を取得
+     * 有効なアイテム一覧を取得
      */
     @Transactional(readOnly = true)
     public List<Item> getActiveItems() {
@@ -34,7 +34,7 @@ public class ItemService {
     }
 
     /**
-     * IDでビールを取得
+     * IDでアイテムを取得
      */
     @Transactional(readOnly = true)
     public Optional<Item> getItemById(Long id) {
@@ -42,69 +42,40 @@ public class ItemService {
     }
 
     /**
-     * ビールを新規登録
+     * アイテムを新規登録
      */
-    public Item saveItem(Item item) {
-        if (item.getShelfLifeDay() == null) {
-            item.setShelfLifeDay(15);
-        }
-        if (item.getPrice() != null && item.getPrice() <= 0) {
-            throw new IllegalArgumentException("価格は1円以上である必要があります");
-        }
-        if (item.getShelfLifeDay() != null && item.getShelfLifeDay() < 1) {
-            throw new IllegalArgumentException("賞味期限は1日以上である必要があります");
+    public Item createItem(Item item) {
+        return ItemRepository.save(item);
+    }
+
+    /**
+     * アイテムの更新
+     */
+    public Item updateItem(Long id, Item item) {
+        if (!ItemRepository.existsById(id)) {
+            throw new RuntimeException("アイテムが見つかりません: " + id);
         }
         return ItemRepository.save(item);
     }
 
     /**
-     * ビールを論理削除
+     * アイテムのステータスを反転
      */
-    public void deactivateItem(Long id) {
-        Optional<Item> itemOpt = ItemRepository.findById(id);
-        if (itemOpt.isPresent()) {
-            Item item = itemOpt.get();
-            item.setIsActive(false);
-            ItemRepository.save(item);
-        } else {
-            throw new IllegalArgumentException("ビールが見つかりません: " + id);
-        }
+    public void toggleItemStatus(Long itemId) {
+        Item item = ItemRepository.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("アイテムが見つかりません: " + itemId));
+        item.setIsActive(!item.getIsActive());
+        ItemRepository.save(item);
     }
     
 
     /**
-     * ビールを物理削除
+     * アイテムを物理削除
      */
     public void deleteItem(Long id) {
         if (!ItemRepository.existsById(id)) {
-            throw new IllegalArgumentException("ビールが見つかりません: " + id);
+            throw new RuntimeException("アイテムが見つかりません: " + id);
         }
         ItemRepository.deleteById(id);
-    }
-
-    /**
-     * ビールの更新
-     */
-    public Item updateItem(Long id, Item updatedItem) {
-        Item existingItem = ItemRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("ビールが見つかりません: " + id));
-
-        // 値が設定されている場合のみ更新
-        if (updatedItem.getName() != null) {
-            existingItem.setName(updatedItem.getName());
-        }
-        if (updatedItem.getPrice() != null) {
-            existingItem.setPrice(updatedItem.getPrice());
-        }
-        if (updatedItem.getShelfLifeDay() != null) {
-            existingItem.setShelfLifeDay(updatedItem.getShelfLifeDay());
-        }
-        if (updatedItem.getDescription() != null) {
-            existingItem.setDescription(updatedItem.getDescription());
-        }
-        if (updatedItem.getIsActive() != null) {
-            existingItem.setIsActive(updatedItem.getIsActive());
-        }
-        return ItemRepository.save(existingItem);
     }
 }
