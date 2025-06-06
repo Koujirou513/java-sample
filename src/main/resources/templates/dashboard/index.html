@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>ダッシュボード</title>
+</head>
+<body>
+    <section>
+        <div class="row">
+            <div class="col-12">
+                <h2>ダッシュボード - 発注予測システム</h2>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">今日の販売入力</h5>
+                        <p class="card-text" th:if="${hasTodaysSales}">
+                            <i class="fas fa-check-circle"></i> 入力済み
+                        </p>
+                        <p class="card-text" th:unless="${hasTodaysSales}">
+                            <i class="fas fa-exclamation-triangle"></i> 未入力
+                        </p>
+                        <a href="/sales/input" class="btn btn-light btn-sm">販売データ入力</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">商品数</h5>
+                        <p class="card-text fs-4" th:text="${totalItems}">0</p>
+                        <a href="/items" class="btn btn-light btn-sm">商品管理</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">週間データ蓄積</h5>
+                        <p class="card-text" th:text="${#lists.size(recentSales)} + '日間'">0日間</p>
+                        <a href="/sales/report" class="btn btn-light btn-sm">分析レポート</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">需要予測</h5>
+                        <p class="card-text">AIで予測中</p>
+                        <a href="/prediction" class="btn btn-light btn-sm">予測結果</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">最近の販売データ</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${#lists.isEmpty(recentSales)}" class="text-center text-muted">
+                            販売データがありません
+                        </div>
+                        <div th:unless="${#lists.isEmpty(recentSales)}">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>販売日</th>
+                                        <th>天気</th>
+                                        <th>登録者</th>
+                                        <th>販売数量</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="sales : ${recentSales}">
+                                        <td th:text="${#temporals.format(sales.targetDate, 'yyyy/MM/dd')}"></td>
+                                        <td>
+                                            <span th:if="${sales.salesWeather != null}">
+                                                <span th:if="${sales.salesWeather.condition == 1}">☀️</span>
+                                                <span th:if="${sales.salesWeather.condition == 2}">☁️</span>
+                                                <span th:if="${sales.salesWeather.condition == 3}">🌧️</span>
+                                            </span>
+                                            <span th:unless="${sales.salesWeather != null}">-</span>
+                                        </td>
+                                        <td th:text="${sales.createdBy.name}"></td>
+                                        <td th:text="${#lists.size(sales.salesItems)} + '品目'"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 発注予測情報 -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card border-info">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="fas fa-info-circle"></i> システム情報</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2"><strong>目的:</strong> 日々の販売数量と天気データを収集し、AI需要予測により最適な発注量を算出</p>
+                        <p class="mb-2"><strong>データ収集:</strong> 販売数量 + 天気情報</p>
+                        <p class="mb-0"><strong>予測対象:</strong> 月曜・木曜の発注推奨数量</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>販売実績一覧</title>
+</head>
+<body>
+    <section>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <h2>販売実績一覧（発注予測用）</h2>
+                <a href="/sales/input" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> 新規登録
+                </a>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div th:if="${#lists.isEmpty(salesList)}" class="text-center text-muted">
+                            販売実績がありません
+                        </div>
+                        <div th:unless="${#lists.isEmpty(salesList)}">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>販売日</th>
+                                        <th>天気</th>
+                                        <th>登録者</th>
+                                        <th>販売総数</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="sales : ${salesList}">
+                                        <td th:text="${#temporals.format(sales.targetDate, 'yyyy/MM/dd')}"></td>
+                                        <td th:text="${sales.weatherDisplay}"></td>
+                                        <td th:text="${sales.createdByName}"></td>
+                                        <td th:text="${sales.totalQuantity} + '個'"></td>
+                                        <td>
+                                            <a th:href="@{/sales/edit/{id}(id=${sales.id})}" class="btn btn-sm btn-outline-primary">編集</a>
+                                            <button type="button" class="btn btn-sm btn-outline-info" 
+                                                    data-bs-toggle="collapse" 
+                                                    th:data-bs-target="'#detail-' + ${sales.id}">
+                                                詳細
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- 詳細表示（折りたたみ） -->
+                                    <tr th:each="sales : ${salesList}" class="collapse" th:id="'detail-' + ${sales.id}">
+                                        <td colspan="5">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h6>商品別販売数量</h6>
+                                                    <table class="table table-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>商品名</th>
+                                                                <th>販売数量</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr th:each="item : ${sales.salesItems}">
+                                                                <td th:text="${item.itemName}"></td>
+                                                                <td th:text="${item.quantity} + '個'"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
