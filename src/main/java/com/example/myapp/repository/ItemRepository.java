@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long>{
 
-    // 有効なビールを取得
+    // 有効なアイテムを取得
     List<Item> findByIsActiveTrueOrderByName();
 }
