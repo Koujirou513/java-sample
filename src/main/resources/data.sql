@@ -1,7 +1,7 @@
 -- 管理者ユーザー挿入
 INSERT INTO users (name, email, password, is_admin, is_active) VALUES
-    ('admin', 'admin@example.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl.k5uGdTCS', TRUE, TRUE)
-    ('staff1', 'staff1@example.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl.k5uGdTCS', FALSE, TRUE);
+    ('admin', 'admin@example.com', '$2a$10$KYoTPn55wpDupi2QOdncYetd43y17OHrVFvxPJg95Nhzptf.zunpi', TRUE, TRUE),
+    ('staff1', 'staff1@example.com', '$2a$10$KYoTPn55wpDupi2QOdncYetd43y17OHrVFvxPJg95Nhzptf.zunpi', FALSE, TRUE);
 
 INSERT INTO items (name, price, shelf_life_day, description, is_active, created_at, updated_at) VALUES 
     ('ホワイトビール', 900, 15, '爽やかで軽やかな口当たりのベルギースタイルホワイトビール', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
