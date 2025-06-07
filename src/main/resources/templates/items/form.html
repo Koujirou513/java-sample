@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head>
+    <title th:text="${editMode} ? '商品編集' : '商品追加'">商品管理</title>
+</head>
+<body>
+    <section>
+        <div class="row">
+            <div class="col-12">
+                <h2 th:text="${editMode} ? '商品編集' : '新商品追加'"></h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" th:object="${item}">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">商品名</label>
+                                <input type="text" class="form-control" th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="form-label">価格（円）</label>
+                                <input type="number" class="form-control" th:field="*{price}" th:classappend="${#fields.hasErrors('price')} ? 'is-invalid' : ''">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="shelfLifeDay" class="form-label">賞味期限（日）</label>
+                                <input type="number" class="form-control" th:field="*{shelfLifeDay}" th:classappend="${#fields.hasErrors('shelfLifeDay')} ? 'is-invalid' : ''">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('shelfLifeDay')}" th:errors="*{shelfLifeDay}"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">説明</label>
+                                <textarea class="form-control" rows="3" th:field="*{description}" th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                            </div>
+                            <div class="mb-3" th:if="${editMode}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" th:field="*{isActive}">
+                                    <label class="form-check-label" for="isActive">有効</label>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="/items" class="btn btn-secondary me-md-2">キャンセル</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <span th:if="${editMode}">更新</span>
+                                    <span th:unless="${editMode}">追加</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
