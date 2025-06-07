@@ -18,6 +18,19 @@
                                 <input type="date" class="form-control" th:field="*{targetDate}" th:classappend="${#fields.hasErrors('targetDate')} ? 'is-invalid' : ''">
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('targetDate')}" th:errors="*{targetDate}"></div>
                             </div>
+                            <!-- 天気選択フィールド -->
+                            <div class="mb-3">
+                                <label for="weather" class="form-label">天気</label>
+                                <select class="form-select" th:field="*{weather}" th:classappend="${#fields.hasErrors('weather')} ? 'is_invalid' : ''">
+                                    <option value="">-- 天気を選択してください --</option>
+                                    <option value="1">晴れ</option>
+                                    <option value="2">曇り</option>
+                                    <option value="3">雨</option>
+                                    <option value="4">大雨</option>
+                                    <option value="5">雪</option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('weather')}" th:errors"*{weather}"></div>
+                            </div>
 
                             <h5>販売商品</h5>
                             <div class="table-responsive">
