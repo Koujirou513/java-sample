@@ -37,7 +37,7 @@ public class ItemService {
      * IDでアイテムを取得
      */
     @Transactional(readOnly = true)
-    public Optional<Item> getItemById(Long id) {
+    public Optional<Item> findById(Long id) {
         return ItemRepository.findById(id);
     }
 
@@ -52,9 +52,6 @@ public class ItemService {
      * アイテムの更新
      */
     public Item updateItem(Long id, Item item) {
-        if (!ItemRepository.existsById(id)) {
-            throw new RuntimeException("アイテムが見つかりません: " + id);
-        }
         return ItemRepository.save(item);
     }
 
