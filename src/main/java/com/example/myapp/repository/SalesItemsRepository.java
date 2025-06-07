@@ -14,6 +14,6 @@ public interface SalesItemsRepository extends JpaRepository<SalesItems, Long> {
     /**
      * 特定の日付の販売数量を取得
      */
-    @Query("SELECT COALESCE(SUM(si.quantity), 0) FROM SalesItems si WHERE si.sales.targetDate = :targetDate")
-    Integer sumQuantityByTargetDate(LocalDate targetDate);
+    @Query("SELECT COALESCE(SUM(si.quantity), 0) FROM SalesItems si WHERE si.sales.date = :date")
+    Integer sumQuantityByDate(LocalDate date);
 }
