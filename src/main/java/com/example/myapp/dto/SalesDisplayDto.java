@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 public class SalesDisplayDto {
     private Long id; 
-    private LocalDate targetDate; 
+    private LocalDate date; 
     private String createdByName;
-    private Integer WeatherCondition;
+    private Integer weather;
     private List<SalesItemDisplayDto> salesItems;
     private Integer totalQuantity; 
 
