@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.myapp.entity.Item;
 import com.example.myapp.service.ItemService;
 import com.example.myapp.service.WeatherApiService;
 

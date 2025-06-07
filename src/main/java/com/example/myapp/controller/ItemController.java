@@ -2,7 +2,6 @@ package com.example.myapp.controller;
 
 import com.example.myapp.entity.Item;
 import com.example.myapp.entity.User;
-import com.example.myapp.repository.ItemRepository;
 import com.example.myapp.service.ItemService;
 
 import org.springframework.beans.factory.annotation.Autowired;
