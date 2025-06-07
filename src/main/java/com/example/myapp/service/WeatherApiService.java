@@ -44,15 +44,15 @@ public class WeatherApiService {
     /**
      * Python APIから需要予測を取得
      */
-    public PredictionResult getDemandPrediction(LocalDate targetDate) {
+    public PredictionResult getDemandPrediction(LocalDate date) {
         try {
-            String url = pythonApiBaseUrl + "/predict/" + targetDate.toString();
+            String url = pythonApiBaseUrl + "/predict/" + date.toString();
             String response = restTemplate.getForObject(url, String.class);
 
             JsonNode jsonNode = objectMapper.readTree(response); // レスポンスをJsonNodeに変換
 
             PredictionResult result = new PredictionResult();
-            result.setTargetDate(targetDate);
+            result.setTargetDate(date);
 
             JsonNode predictions = jsonNode.get("predictions"); 
             if (predictions != null && predictions.isObject()) {
