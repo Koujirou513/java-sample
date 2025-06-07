@@ -18,7 +18,7 @@ public class SalesInputDto {
     @NotNull(message = "天気は必須です")
     @Min(value = 1, message = "天気情報が不正です")
     @Max(value = 5, message = "天気情報が不正です")
-    private Integer weatherCondition; 
+    private Integer weather; 
 
     @Valid
     private List<SalesItemDto> salesItems;
