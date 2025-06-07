@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>需要予測</title>
+</head>
+<body>
+    <section>
+        <div class="row">
+            <div class="col-12">
+                <h2><i class="fas fa-chart-line"></i> 需要予測・発注支援</h2>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-calendar-week"></i> 
+                            月曜発注 (<span th:text="${#temporals.format(nextMonday, 'MM/dd')}"></span>)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${mondayPrediction != null}">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>商品名</th>
+                                        <th>予測数量</th>
+                                        <th>推奨発注</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="item : ${items}">
+                                        <td th:text="${item.name}"></td>
+                                        <td th:text="${mondayPrediction.itemPredictions.get(item.id) ?: 0}"></td>
+                                        <td>
+                                            <span class="badge bg-warning" 
+                                                  th:text="${(mondayPrediction.itemPredictions.get(item.id) ?: 0) * 1.2}">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:unless="${mondayPrediction != null}" class="text-center text-muted">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            予測データを取得できませんでした
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-calendar-week"></i> 
+                            木曜発注 (<span th:text="${#temporals.format(nextThursday, 'MM/dd')}"></span>)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${thursdayPrediction != null}">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>商品名</th>
+                                        <th>予測数量</th>
+                                        <th>推奨発注</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="item : ${items}">
+                                        <td th:text="${item.name}"></td>
+                                        <td th:text="${thursdayPrediction.itemPredictions.get(item.id) ?: 0}"></td>
+                                        <td>
+                                            <span class="badge bg-warning" 
+                                                  th:text="${(thursdayPrediction.itemPredictions.get(item.id) ?: 0) * 1.2}">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:unless="${thursdayPrediction != null}" class="text-center text-muted">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            予測データを取得できませんでした
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-info-circle"></i> 予測について</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <ul class="mb-0">
+                                <li>予測は過去の販売実績と天気予報を基に算出されています</li>
+                                <li>推奨発注量は予測値の1.2倍で安全在庫を考慮しています</li>
+                                <li>実際の発注では在庫状況も併せてご確認ください</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
