@@ -49,17 +49,20 @@ public class WeatherApiService {
             String url = pythonApiBaseUrl + "/predict/" + targetDate.toString();
             String response = restTemplate.getForObject(url, String.class);
 
-            JsonNode jsonNode = objectMapper.readTree(response);
+            JsonNode jsonNode = objectMapper.readTree(response); // レスポンスをJsonNodeに変換
+
             PredictionResult result = new PredictionResult();
             result.setTargetDate(targetDate);
 
-            JsonNode predictions = jsonNode.get("predictions");
-            predictions.fields().forEachRemaining(entry -> {
-                result.addItemPrediction(
-                    Long.parseLong(entry.getKey()),
-                    entry.getValue().asInt()
-                );
-            });
+            JsonNode predictions = jsonNode.get("predictions"); 
+            if (predictions != null && predictions.isObject()) {
+                predictions.fieldNames().forEachRemaining(fieldName -> {
+                    result.addItemPrediction(
+                        Long.parseLong(fieldName),
+                        predictions.get(fieldName).asInt()
+                    );
+                });
+            }
             return result;
         } catch (Exception e) {
             // Python APIが利用できない場合のデフォルト値を返す
