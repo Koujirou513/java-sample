@@ -14,11 +14,11 @@ public interface SalesRepository extends JpaRepository<Sales, Long> {
     /**
      * 特定の日付の販売実績を取得
      */
-    Optional<Sales> findByTargetDate(LocalDate targetDate);
+    Optional<Sales> findByDate(LocalDate date);
     
     /**
      * 全ての販売実績を降順で取得
      */
-    @Query("SELECT s FROM Sales s ORDER BY s.targetDate DESC")
-    List<Sales> findAllOrderByTargetDateDesc();
+    @Query("SELECT s FROM Sales s ORDER BY s.date DESC")
+    List<Sales> findAllOrderByDateDesc();
 }
