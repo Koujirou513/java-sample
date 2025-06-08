@@ -34,7 +34,7 @@
                                 </thead>
                                 <tbody>
                                     <tr th:each="sales : ${salesList}">
-                                        <td th:text="${#temporals.format(sales.targetDate, 'yyyy/MM/dd')}"></td>
+                                        <td th:text="${#temporals.format(sales.date, 'yyyy/MM/dd')}"></td>
                                         <td th:text="${sales.weatherDisplay}"></td>
                                         <td th:text="${sales.createdByName}"></td>
                                         <td th:text="${sales.totalQuantity} + '個'"></td>
