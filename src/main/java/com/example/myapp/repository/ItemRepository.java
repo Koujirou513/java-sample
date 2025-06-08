@@ -11,4 +11,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
 
     // 有効なアイテムを取得
     List<Item> findByIsActiveTrueOrderByName();
+
+    // アクティブなアイテム数をカウント
+    long countByIsActiveTrue();
 }
