@@ -63,9 +63,10 @@
                         <p><strong>ユーザー名:</strong><span th:text="${#authentication.name}"></span></p>
                         <p><strong>権限:</strong> <span th:text="${#authentication.principal.isAdmin} ? '管理者' : '一般ユーザー'"></span></p>
                         <p><strong>ステータス:</strong> <span class="badge bg-success">アクティブ</span></p>
-
+                    </div>
+                </div>
+            </div>
         </div>
-
     </section>
 </body>
 </html>
