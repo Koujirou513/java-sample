@@ -57,7 +57,7 @@
                                 </thead>
                                 <tbody>
                                     <tr th:each="data : ${salesData}">
-                                        <td th:text="${#temporals.format(data.sales.targetDate, 'yyyy/MM/dd')}"></td>
+                                        <td th:text="${#temporals.format(data.sales.date, 'yyyy/MM/dd')}"></td>
                                         <td>
                                             <span th:if="${data.sales.salesWeather != null}">
                                                 <span th:if="${data.sales.salesWeather.condition == 1}">☀️ 晴れ</span>
