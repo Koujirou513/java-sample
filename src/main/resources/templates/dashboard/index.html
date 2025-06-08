@@ -16,13 +16,14 @@
                 <div class="card bg-primary text-white">
                     <div class="card-body">
                         <h5 class="card-title">販売データ入力</h5>
-                        <p class="card-text" th:if="${hasTodaysSales}">
+                        <p class="card-text" th:if="${hasTodaySales}">
                             <i class="fas fa-check-circle"></i> 入力済み
                         </p>
-                        <p class="card-text" th:unless="${hasTodaysSales}">
+                        <p class="card-text" th:unless="${hasTodaySales}">
                             <i class="fas fa-exclamation-triangle"></i> 未入力
                         </p>
-                        <a href="/sales/input" class="btn btn-light btn-sm">入力画面へ</a>
+                        <a th:unless="${hasTodaySales}" href="/sales/input" class="btn btn-light btn-sm">入力画面へ</a>
+                        <button th:if="${hasTodaySales}" class="btn btn-secondary btn-sm" disabled>入力済み</button>
                     </div>
                 </div>
             </div>
@@ -30,7 +31,7 @@
                 <div class="card bg-success text-white">
                     <div class="card-body">
                         <h5 class="card-title">商品数</h5>
-                        <p class="card-text fs-4" th:text="${totalItems}">0</p>
+                        <p class="card-text" th:text="${totalItems}">0</p>
                         <a href="/items" class="btn btn-light btn-sm">商品管理</a>
                     </div>
                 </div>
@@ -59,7 +60,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5>ユーザー情報</h5>
-                        <p><strong>ユーザー名<strong><span th:text="${#authentication.name}"></span></p>
+                        <p><strong>ユーザー名:</strong><span th:text="${#authentication.name}"></span></p>
                         <p><strong>権限:</strong> <span th:text="${#authentication.principal.isAdmin} ? '管理者' : '一般ユーザー'"></span></p>
                         <p><strong>ステータス:</strong> <span class="badge bg-success">アクティブ</span></p>
 
