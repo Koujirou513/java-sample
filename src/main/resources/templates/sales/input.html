@@ -14,9 +14,9 @@
                         <div class="card-body">
                         <form method="post" th:action="@{/sales/input}" th:object="${salesInput}">
                             <div class="mb-3">
-                                <label for="targetDate" class="form-label">販売日</label>
-                                <input type="date" class="form-control" th:field="*{targetDate}" th:classappend="${#fields.hasErrors('targetDate')} ? 'is-invalid' : ''" required>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('targetDate')}" th:errors="*{targetDate}"></div>
+                                <label for="date" class="form-label">販売日</label>
+                                <input type="date" class="form-control" th:field="*{date}" th:classappend="${#fields.hasErrors('date')} ? 'is-invalid' : ''" required>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
                             </div>
                             <!-- 天気選択フィールド -->
                             <div class="mb-3">
