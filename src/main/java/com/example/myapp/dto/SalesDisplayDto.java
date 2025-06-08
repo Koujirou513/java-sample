@@ -11,6 +11,7 @@ public class SalesDisplayDto {
     private LocalDate date; 
     private String createdByName;
     private Integer weather;
+    private String weatherDisplay;
     private List<SalesItemDisplayDto> salesItems;
     private Integer totalQuantity; 
 
