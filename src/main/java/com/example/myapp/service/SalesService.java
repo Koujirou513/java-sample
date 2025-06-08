@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.myapp.dto.SalesDisplayDto;
 import com.example.myapp.dto.SalesInputDto;
 import com.example.myapp.entity.Sales;
 import com.example.myapp.entity.SalesItems;
 import com.example.myapp.entity.User;
+import com.example.myapp.enums.Weather;
 import com.example.myapp.repository.SalesItemsRepository;
 import com.example.myapp.repository.SalesRepository;
 
@@ -38,13 +40,13 @@ public class SalesService {
     /**
      * 販売実績をIDで取得
      */    
-    public Optional<Sales> findByTargetDate(LocalDate date) {
+    public Optional<Sales> findByDate(LocalDate date) {
         return salesRepository.findByDate(date);
     }
     /**
      * 全ての販売実績を取得
      */
-    public List<Sales> gatAllSales() {
+    public List<Sales> getAllSales() {
         return salesRepository.findAllOrderByDateDesc();
     }
 
@@ -74,4 +76,34 @@ public class SalesService {
         return salesRepository.save(sales);
     }
 
+    public List<SalesDisplayDto> getSalesDisplayList() {
+        List<Sales> salesList = getAllSales();
+        List<SalesDisplayDto> displayList = new ArrayList<>();
+
+        for (Sales sales : salesList) {
+            SalesDisplayDto displayDto = new SalesDisplayDto();
+            displayDto.setId(sales.getId());
+            displayDto.setDate(sales.getDate());
+            displayDto.setCreatedByName(sales.getCreatedBy().getName());
+            displayDto.setWeather(sales.getWeather());
+
+            displayDto.setWeatherDisplay(Weather.getDisplayTextByCode(sales.getWeather()));
+
+            List<SalesDisplayDto.SalesItemDisplayDto> itemDisplayList = new ArrayList<>();
+            int totalQuantity = 0;
+
+            for (SalesItems item : sales.getSalesItems()) {
+                SalesDisplayDto.SalesItemDisplayDto itemDisplay = new SalesDisplayDto.SalesItemDisplayDto();
+                itemDisplay.setItemName(item.getItem().getName());
+                itemDisplay.setQuantity(item.getQuantity());
+                itemDisplayList.add(itemDisplay);
+                totalQuantity += item.getQuantity();
+            }
+
+            displayDto.setSalesItems(itemDisplayList);
+            displayDto.setTotalQuantity(totalQuantity);
+            displayList.add(displayDto);
+        }
+        return displayList;
+    }
 }
