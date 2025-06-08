@@ -70,13 +70,16 @@ public class SalesController {
             model.addAttribute("items", itemService.getActiveItems());
             return "sales/input";
         }
+
+        Optional<Sales> existingSales = salesService.findByDate(salesInput.getDate());
+        if (existingSales.isPresent()) {
+            return "redirect:/sales/input?error=duplicate_date&date=" + salesInput.getDate();
+        }
         try {
             // 販売データを保存するSalesServiceを呼び出す
             salesService.saveSalesData(salesInput, currentUser);
-
             redirectAttributes.addFlashAttribute("successMessage", "販売データが正常に保存されました");
-
-            return "redirect:/sales?success=true";
+            return "redirect:/sales";
         } catch (Exception e) {
             model.addAttribute("error", "販売データの保存に失敗しました: " + e.getMessage());
             model.addAttribute("items", itemService.getActiveItems());
