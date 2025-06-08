@@ -15,7 +15,11 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <form method="post" th:object="${item}">
+                        <!-- フォームのaction属性を動的に変更 -->
+                        <form method="post" 
+                            th:action="${editMode} ? @{/items/edit/{id}(id=${item.id})} : @{/item/add}"
+                            th:object="${item}" >
+
                             <div class="mb-3">
                                 <label for="name" class="form-label">商品名</label>
                                 <input type="text" class="form-control" th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''">
