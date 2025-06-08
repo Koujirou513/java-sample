@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <!-- フォームのaction属性を動的に変更 -->
                         <form method="post" 
-                            th:action="${editMode} ? @{/items/edit/{id}(id=${item.id})} : @{/item/add}"
+                            th:action="${editMode} ? @{/items/edit/{id}(id=${item.id})} : @{/items/add}"
                             th:object="${item}" >
 
                             <div class="mb-3">
