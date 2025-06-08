@@ -13,7 +13,7 @@ import lombok.Data;
 public class SalesInputDto {
     
     @NotNull(message = "販売日は必須です")
-    private LocalDate targetDate; 
+    private LocalDate date; 
 
     @NotNull(message = "天気は必須です")
     @Min(value = 1, message = "天気情報が不正です")
