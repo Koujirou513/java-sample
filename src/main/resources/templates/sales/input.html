@@ -15,13 +15,13 @@
                         <form method="post" th:action="@{/sales/input}" th:object="${salesInput}">
                             <div class="mb-3">
                                 <label for="targetDate" class="form-label">販売日</label>
-                                <input type="date" class="form-control" th:field="*{targetDate}" th:classappend="${#fields.hasErrors('targetDate')} ? 'is-invalid' : ''">
+                                <input type="date" class="form-control" th:field="*{targetDate}" th:classappend="${#fields.hasErrors('targetDate')} ? 'is-invalid' : ''" required>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('targetDate')}" th:errors="*{targetDate}"></div>
                             </div>
                             <!-- 天気選択フィールド -->
                             <div class="mb-3">
                                 <label for="weather" class="form-label">天気</label>
-                                <select class="form-select" th:field="*{weather}" th:classappend="${#fields.hasErrors('weather')} ? 'is_invalid' : ''">
+                                <select class="form-select" th:field="*{weather}" th:classappend="${#fields.hasErrors('weather')} ? 'is_invalid' : ''" required>
                                     <option value="">-- 天気を選択してください --</option>
                                     <option value="1">晴れ</option>
                                     <option value="2">曇り</option>
@@ -54,7 +54,7 @@
                             </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="/sales" class="btn btn-secondary me-md-2">キャンセル</a>
+                            <a href="/dashboard" class="btn btn-secondary me-md-2">キャンセル</a>
                             <button type="submit" class="btn btn-primary">
                                 <span th:if="${editMode}">更新</span>
                                 <span th:unless="${editMode}">登録</span>
