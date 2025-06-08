@@ -47,6 +47,17 @@
             <i class="fas fa-search"></i> 指定されたデータが見つかりません。
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+
+        <div th:if="${param.error == 'duplicate_date'}" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="fas fa-calendar-times"></i> 
+            <span th:if="${param.date}">
+                <span th:text="${param.date}"></span>の販売実績は既に登録されています。別の日付を選択してください。
+            </span>
+            <span th:unless="${param.date}">
+                指定された日付の販売実績は既に登録されています。別の日付を選択してください。
+            </span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         
         <div th:if="${param.error == 'already_exists'}" class="alert alert-warning alert-dismissible fade show" role="alert">
             <i class="fas fa-exclamation-triangle"></i> 本日の販売実績は既に入力済みです。
