@@ -56,7 +56,7 @@ public class SalesService {
 
     public Sales saveSalesData(SalesInputDto salesInput, User currentUser) {
         Sales sales = new Sales();
-        sales.setDate(salesInput.getTargetDate());
+        sales.setDate(salesInput.getDate());
         sales.setWeather(salesInput.getWeather());
         sales.setCreatedBy(currentUser);
 
