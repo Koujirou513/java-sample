@@ -15,14 +15,14 @@ import java.util.Optional;
 public class ItemService {
     
     @Autowired
-    private ItemRepository ItemRepository;
+    private ItemRepository itemRepository;
 
     /**
      * アイテム一覧を取得
      */
     @Transactional(readOnly = true)
     public List<Item> getAllItems() {
-        return ItemRepository.findAll();
+        return itemRepository.findAll();
     }
 
     /**
@@ -30,7 +30,7 @@ public class ItemService {
      */
     @Transactional(readOnly = true)
     public List<Item> getActiveItems() {
-        return ItemRepository.findByIsActiveTrueOrderByName();
+        return itemRepository.findByIsActiveTrueOrderByName();
     }
 
     /**
@@ -38,31 +38,31 @@ public class ItemService {
      */
     @Transactional(readOnly = true)
     public Optional<Item> findById(Long id) {
-        return ItemRepository.findById(id);
+        return itemRepository.findById(id);
     }
 
     /**
      * アイテムを新規登録
      */
     public Item createItem(Item item) {
-        return ItemRepository.save(item);
+        return itemRepository.save(item);
     }
 
     /**
      * アイテムの更新
      */
     public Item updateItem(Long id, Item item) {
-        return ItemRepository.save(item);
+        return itemRepository.save(item);
     }
 
     /**
      * アイテムのステータスを反転
      */
     public void toggleItemStatus(Long itemId) {
-        Item item = ItemRepository.findById(itemId)
+        Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("アイテムが見つかりません: " + itemId));
         item.setIsActive(!item.getIsActive());
-        ItemRepository.save(item);
+        itemRepository.save(item);
     }
     
 
@@ -70,9 +70,16 @@ public class ItemService {
      * アイテムを物理削除
      */
     public void deleteItem(Long id) {
-        if (!ItemRepository.existsById(id)) {
+        if (!itemRepository.existsById(id)) {
             throw new RuntimeException("アイテムが見つかりません: " + id);
         }
-        ItemRepository.deleteById(id);
+        itemRepository.deleteById(id);
+    }
+
+    /*
+     * アイテム数を取得
+     */
+    public long getActiveItemsCount() {
+        return itemRepository.countByIsActiveTrue();
     }
 }
